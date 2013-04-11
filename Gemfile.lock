@@ -102,6 +102,7 @@ GEM
     multi_json (1.7.2)
     nokogiri (1.5.9)
     orm_adapter (0.4.0)
+    pg (0.15.1)
     polyglot (0.3.3)
     quiet_assets (1.0.2)
       railties (>= 3.1, < 5.0)
@@ -184,6 +185,7 @@ DEPENDENCIES
   figaro (>= 0.5.3)
   jquery-rails
   launchy (>= 2.1.2)
+  pg
   quiet_assets (>= 1.0.1)
   rails (= 3.2.13)
   rspec-rails (~> 2.0)
