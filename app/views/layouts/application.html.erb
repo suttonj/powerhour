@@ -14,6 +14,7 @@
     <%= stylesheet_link_tag "application", :media => "all" %>
     <%= javascript_include_tag "application" %>
     <%= javascript_include_tag "vendor/custom.modernizr" %>
+    <script src="//www.youtube.com/iframe_api"></script>
     <%= csrf_meta_tags %>
 
     <%= yield(:head) %>
@@ -23,7 +24,6 @@
     
     <div id="container" class="container">
       <header>
-        <%= render 'layouts/navigation' %>
         <%= render 'layouts/messages' %>
       </header>
       
