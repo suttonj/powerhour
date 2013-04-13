@@ -19,7 +19,7 @@
 
 
 <script type="text/javascript">
-	var videoIDs = <%= raw @playlist %>;
+	var playlist = <%= raw @playlist %>;
 	//var videoIDs = [
 	//     '9bZkp7q19f0',
 	//     'QK8mJJJvaes',
@@ -38,7 +38,7 @@
 	    player = new YT.Player('player', {
 	        height: '315',
 	        width: '420',
-	        videoId: 'OdT9z-JjtJk',
+	        videoId: '',
 	        events: {
 	            'onReady': onPlayerReady,
 	            'onStateChange': onPlayerStateChange
@@ -49,7 +49,7 @@
 
 	function onPlayerReady(event) {
 	    //event.target.playVideo();
-	    event.target.loadPlaylist(videoIDs, 0, 0, "default");
+	    event.target.loadPlaylist(playlist, 0, 60, "default");
 
 	}
 
@@ -58,15 +58,15 @@
 	function onPlayerStateChange(event) {
 	    done = false;
 	    if (player.getPlaylistIndex() != 0)
-	    	player.seekTo(60, true);
+	    	player.seekTo(91, true);
 
 	    if (event.data == YT.PlayerState.PLAYING && !done) {
-	        setTimeout(stopVideo, 6000);
+	        setTimeout(nextVideo, 60000);
 	        done = true;
 	    }
 	}
 
-	function stopVideo() {
+	function nextVideo() {
 	    player.nextVideo();
 
 	}

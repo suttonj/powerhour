@@ -24,3 +24,8 @@ puts 'video: ' << video2.name
 
 video3 = Video.find_or_create_by_ytid :ytid => 'RnpyRe_7jZA', :name => 'High School - Nicki Minaj'
 puts 'video: ' << video3.name
+
+puts 'DEFAULT PLAYLIST'
+
+playlist1 = Playlist.find_or_create_by_ytid :ytid => 'PLhM36HkgFAEbz26ztdP_ePVXUMqix_sVt', :name => 'Pop'
+puts 'playlist: ' << playlist1.name
