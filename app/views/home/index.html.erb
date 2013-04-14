@@ -2,6 +2,8 @@
 	<div class="large-12 columns">
 		<h2>Power Hour</h2>
 		<p>Click the video to begin!</p>
+		<button onclick="javascript:pauseVideo()">Pause</button>
+		<button onclick="javascript:resumeVideo()">Resume</button>
 		<hr />
 
 		<div class="flex-video">
@@ -31,8 +33,29 @@
 	var firstScriptTag = document.getElementsByTagName('script')[0];
 	firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
+	function Timer(callback, delay) {
+	    var timerId, start, remaining = delay;
+
+	    this.pause = function() {
+	        window.clearTimeout(timerId);
+	        remaining -= new Date() - start;
+	    };
+
+	    this.resume = function() {
+	        start = new Date();
+	        timerId = window.setTimeout(callback, remaining);
+	    };
+
+	    this.clear = function() {
+	    	window.clearTimeout(timerId);
+	    };
+
+	    this.resume();
+	}
+
 	var player;
 	var timeouts = [];
+	var timer;
 	var played = 0;
 
 	function onYouTubeIframeAPIReady() {
@@ -67,7 +90,7 @@
 	    player.setLoop(true);
 	    player.addEventListener("onError", "onPlayerError");
 	}
-	
+
 	function onPlayerError() {
 		alert('err');
 		if(played)
@@ -77,20 +100,34 @@
 	//play video for 60 seconds
 	var done = false;
 	function onPlayerStateChange(event) {
-	    done = false;
-	    if (player.getPlaylistIndex() != 0)
-	    	player.seekTo(91, true);
 
-	    if (event.data == YT.PlayerState.PLAYING && !done) {
-	    	clearTimeouts();
-	        timeouts.push( setTimeout(nextVideo, 6000) );
+		if (event.data == YT.PlayerState.PAUSED) {
+			return;
+		}
+
+	    done = false;
+
+		if (event.data == YT.PlayerState.PLAYING && !done) {
+		    
+		    if (timer == null) {
+
+			    if (player.getPlaylistIndex() != 0)
+		    		player.seekTo(91, true);	
+
+		    	timer = new Timer(nextVideo, 6000);
+		        //timeouts.push( timer );
+	    	}
+
 	        done = true;
-	    }
+		}
+		
 	}
 
 	function nextVideo() {
 		played = played + 1;
 		if (played <= 60) {
+			timer.clear();
+			timer = null;
 	    	player.nextVideo();
 	 	}
 	    else {
@@ -99,6 +136,16 @@
 	    }
 	}
 
+	function pauseVideo() {
+		player.pauseVideo();
+		timer.pause();
+		//clearTimeouts();
+	}
+
+	function resumeVideo() {
+		player.playVideo();
+		timer.resume();
+	}
 </script>
 
 <h3><%= @playlist %></h3>

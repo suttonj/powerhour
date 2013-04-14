@@ -10,7 +10,7 @@ class HomeController < ApplicationController
   	playlist_id = Playlist.find_by_name('Pop').ytid.to_s
 
   	#youtubeit
-  	client = YouTubeIt::Client.new(:dev_key => "AI39si4Pr_04oKIc9DGKvMKLr3uGITCKmGGnz2jx-wu2xx_BcTgYEFc5w18FPsRyhVCuJX3xq0My7oojh0LZJHmPoEi7xEnoIQ")
+  	client = YouTubeIt::Client.new(:dev_key => ENV['API_KEY'])
   	playlist_videos = client.playlist(playlist_id)
   	playlist_videos_ids = playlist_videos.videos.map &:unique_id
   	@playlist = playlist_videos_ids

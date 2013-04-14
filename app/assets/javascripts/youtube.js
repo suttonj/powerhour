@@ -1,53 +1,19 @@
 
+//Timer function 
+// function Timer(callback, delay) {
+//     var timerId, start, remaining = delay;
 
-/**
- * Put your video IDs in this array
- */
-// var videoIDs = [
-//     '9bZkp7q19f0',
-//     'QK8mJJJvaes',
-//     'RnpyRe_7jZA'
-// ];
+//     this.pause = function() {
+//         window.clearTimeout(timerId);
+//         remaining -= new Date() - start;
+//     };
 
-// var tag = document.createElement('script');
-// tag.src = "https://www.youtube.com/iframe_api";
-// var firstScriptTag = document.getElementsByTagName('script')[0];
-// firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+//     this.resume = function() {
+//         start = new Date();
+//         timerId = window.setTimeout(callback, remaining);
+//     };
 
-// var player;
-
-// function onYouTubeIframeAPIReady() {
-
-//     player = new YT.Player('player', {
-//         height: '315',
-//         width: '420',
-//         videoId: 'OdT9z-JjtJk',
-//         events: {
-//             'onReady': onPlayerReady,
-//                 'onStateChange': onPlayerStateChange
-//         }
-//     });
-
-//     //player.loadPlaylist(['OdT9z-JjtJk','NlXTv5Ondgs'], 0, 60, "default");
-    
-// }
-
-// function onPlayerReady(event) {
-//     //event.target.playVideo();
-//     event.target.loadPlaylist(videoIDs, 0, 60, "default");
-// }
-
-// //play video for 60 seconds
-// var done = false;
-// function onPlayerStateChange(event) {
-//     if (event.data == YT.PlayerState.PLAYING && !done) {
-//         setTimeout(stopVideo, 60000);
-//         done = true;
-//     }
-// }
-
-// function stopVideo() {
-//     player.nextVideo();
+//     this.resume();
 // }
 
 //Video fluid width resizing code?
