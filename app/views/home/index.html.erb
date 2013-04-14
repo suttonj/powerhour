@@ -32,6 +32,8 @@
 	firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
 	var player;
+	var timeouts = [];
+	var played = 0;
 
 	function onYouTubeIframeAPIReady() {
 
@@ -47,10 +49,29 @@
 	    
 	}
 
+	//prevent timeout stack from getting out of sync
+	function clearTimeouts() {
+		if (timeouts.length != null && timeouts.length > 0)
+			{	
+			for (var i = 0; i < timeouts.length; i++) {
+			    clearTimeout(timeouts[i]);
+			}
+			//quick reset of the timer array you just cleared
+			timeouts = [];
+		}
+	}
+
 	function onPlayerReady(event) {
 	    //event.target.playVideo();
 	    event.target.loadPlaylist(playlist, 0, 60, "default");
-
+	    player.setLoop(true);
+	    player.addEventListener("onError", "onPlayerError");
+	}
+	
+	function onPlayerError() {
+		alert('err');
+		if(played)
+			played = played - 1;
 	}
 
 	//play video for 60 seconds
@@ -61,15 +82,23 @@
 	    	player.seekTo(91, true);
 
 	    if (event.data == YT.PlayerState.PLAYING && !done) {
-	        setTimeout(nextVideo, 60000);
+	    	clearTimeouts();
+	        timeouts.push( setTimeout(nextVideo, 6000) );
 	        done = true;
 	    }
 	}
 
 	function nextVideo() {
-	    player.nextVideo();
-
+		played = played + 1;
+		if (played <= 60) {
+	    	player.nextVideo();
+	 	}
+	    else {
+	    	player.stopVideo();
+	    	alert('Done! ' + played + ' videos played.');
+	    }
 	}
+
 </script>
 
 <h3><%= @playlist %></h3>
