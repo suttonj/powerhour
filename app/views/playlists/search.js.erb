@@ -1,0 +1,7 @@
+var playlist = <%= raw @playlist %>;
+timer.clear();
+timer = null;
+played = 0;
+
+player.loadPlaylist(playlist, 0, 60, "default");
+timer = new Timer(nextVideo, 6000);

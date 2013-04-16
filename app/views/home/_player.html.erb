@@ -1,0 +1,141 @@
+<div class="flex-video">
+	<div id="player">
+	</div>
+</div>
+
+<script type="text/javascript">
+	//init_playlist(<%= raw @playlist %>); //TODO make this js more modular
+	var playlist = <%= raw @playlist %>;
+
+	var tag = document.createElement('script');
+	tag.src = "https://www.youtube.com/iframe_api";
+	var firstScriptTag = document.getElementsByTagName('script')[0];
+	firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+	function Timer(callback, delay) {
+	    var timerId, start, remaining = delay;
+
+	    this.pause = function() {
+	        window.clearTimeout(timerId);
+	        remaining -= new Date() - start;
+	    };
+
+	    this.resume = function() {
+	        start = new Date();
+	        timerId = window.setTimeout(callback, remaining);
+	    };
+
+	    this.clear = function() {
+	    	window.clearTimeout(timerId);
+	    };
+
+	    this.resume();
+	}
+
+	var player;
+	var timeouts = [];
+	var timer;
+	var played = 0;
+
+	function onYouTubeIframeAPIReady() {
+
+	    player = new YT.Player('player', {
+	        height: '315',
+	        width: '420',
+	        videoId: '',
+	        playerVars: { 'controls': 0 },
+	        events: {
+	            'onReady': onPlayerReady,
+	            'onStateChange': onPlayerStateChange
+	        }
+	    });
+	    
+	}
+
+	//prevent timeout stack from getting out of sync
+	function clearTimeouts() {
+		if (timeouts.length != null && timeouts.length > 0)
+			{	
+			for (var i = 0; i < timeouts.length; i++) {
+			    clearTimeout(timeouts[i]);
+			}
+			//quick reset of the timer array you just cleared
+			timeouts = [];
+		}
+	}
+
+	function onPlayerReady(event) {
+	    //event.target.playVideo();
+	    event.target.loadPlaylist(playlist, 0, 60, "default");
+	    player.setLoop(true);
+	    player.addEventListener("onError", "onPlayerError");
+	}
+
+	function onPlayerError() {
+		alert('err');
+		if(played)
+			played = played - 1;
+	}
+
+	//play video for 60 seconds
+	var done = false, paused = false;
+	function onPlayerStateChange(event) {
+		if (event.data == YT.PlayerState.PAUSED) {
+			timer.pause();
+			paused = true;
+			return;
+		}
+
+	    done = false;
+		if (event.data == YT.PlayerState.PLAYING && !done) {
+		    
+		    if (timer == null) {
+
+			    if (player.getPlaylistIndex() != 0)
+		    		player.seekTo(91, true);	
+
+		    	timer = new Timer(nextVideo, 6000);
+		        //timeouts.push( timer );
+	    	}
+	    	else if (paused) {
+	    		timer.resume();
+	    		paused = false;
+	    	}
+
+	        done = true;
+		}		
+	}
+
+	function nextVideo() {
+		played = played + 1;
+		timer.clear();
+	    timer = null;
+	    
+		if (played <= 60) {
+	    	player.nextVideo();
+	 	}
+	    else {
+	    	player.stopVideo();
+	    	alert('Done! ' + played + ' videos played.');
+	    }
+	}
+
+	function pauseVideo() {
+		player.pauseVideo();
+		timer.pause();
+		paused = true;
+		//clearTimeouts();
+	}
+
+	function resumeVideo() {
+
+		if (paused) {
+			player.playVideo();
+			if(timer != null)
+				timer.resume();
+			else
+				timer = new Timer(nextVideo, 6000);
+			paused = false;
+		}
+	}
+</script>

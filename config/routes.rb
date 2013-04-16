@@ -1,5 +1,7 @@
 Dionysus::Application.routes.draw do
 
+  get "playlists/search"
+
   authenticated :user do
     root :to => 'home#index'
   end

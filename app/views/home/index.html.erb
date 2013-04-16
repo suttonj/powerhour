@@ -2,150 +2,17 @@
 	<div class="large-12 columns">
 		<h2>Power Hour</h2>
 		<p>Click the video to begin!</p>
-		<button onclick="javascript:pauseVideo()">Pause</button>
-		<button onclick="javascript:resumeVideo()">Resume</button>
+		<ul class="button-group radius">
+			<li><a href="javascript:pauseVideo()" class="button radius">Pause</a></li>
+			<li><a href="javascript:resumeVideo()" class="button radius">Play</a></li>
+		</ul>
+
+		<%= render 'search' %>
+
 		<hr />
 
-		<div class="flex-video">
-      		<div id="player">
-      		</div>
- 		</div>
-                 
-     <!-- <div id="player2">
-        <iframe width="420" height="315" src="http://www.youtube.com/embed/9otNWTHOJi8?autoplay=1" frameborder="0" allowfullscreen></iframe> 
-      </div>--> 
+		<%= render 'player' %>
 
 	</div>
 
 </div>
-
-
-<script type="text/javascript">
-	var playlist = <%= raw @playlist %>;
-	//var videoIDs = [
-	//     '9bZkp7q19f0',
-	//     'QK8mJJJvaes',
-	//     'RnpyRe_7jZA'
-	// ];
-
-	var tag = document.createElement('script');
-	tag.src = "https://www.youtube.com/iframe_api";
-	var firstScriptTag = document.getElementsByTagName('script')[0];
-	firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-	function Timer(callback, delay) {
-	    var timerId, start, remaining = delay;
-
-	    this.pause = function() {
-	        window.clearTimeout(timerId);
-	        remaining -= new Date() - start;
-	    };
-
-	    this.resume = function() {
-	        start = new Date();
-	        timerId = window.setTimeout(callback, remaining);
-	    };
-
-	    this.clear = function() {
-	    	window.clearTimeout(timerId);
-	    };
-
-	    this.resume();
-	}
-
-	var player;
-	var timeouts = [];
-	var timer;
-	var played = 0;
-
-	function onYouTubeIframeAPIReady() {
-
-	    player = new YT.Player('player', {
-	        height: '315',
-	        width: '420',
-	        videoId: '',
-	        events: {
-	            'onReady': onPlayerReady,
-	            'onStateChange': onPlayerStateChange
-	        }
-	    });
-	    
-	}
-
-	//prevent timeout stack from getting out of sync
-	function clearTimeouts() {
-		if (timeouts.length != null && timeouts.length > 0)
-			{	
-			for (var i = 0; i < timeouts.length; i++) {
-			    clearTimeout(timeouts[i]);
-			}
-			//quick reset of the timer array you just cleared
-			timeouts = [];
-		}
-	}
-
-	function onPlayerReady(event) {
-	    //event.target.playVideo();
-	    event.target.loadPlaylist(playlist, 0, 60, "default");
-	    player.setLoop(true);
-	    player.addEventListener("onError", "onPlayerError");
-	}
-
-	function onPlayerError() {
-		alert('err');
-		if(played)
-			played = played - 1;
-	}
-
-	//play video for 60 seconds
-	var done = false;
-	function onPlayerStateChange(event) {
-
-		if (event.data == YT.PlayerState.PAUSED) {
-			return;
-		}
-
-	    done = false;
-
-		if (event.data == YT.PlayerState.PLAYING && !done) {
-		    
-		    if (timer == null) {
-
-			    if (player.getPlaylistIndex() != 0)
-		    		player.seekTo(91, true);	
-
-		    	timer = new Timer(nextVideo, 6000);
-		        //timeouts.push( timer );
-	    	}
-
-	        done = true;
-		}
-		
-	}
-
-	function nextVideo() {
-		played = played + 1;
-		if (played <= 60) {
-			timer.clear();
-			timer = null;
-	    	player.nextVideo();
-	 	}
-	    else {
-	    	player.stopVideo();
-	    	alert('Done! ' + played + ' videos played.');
-	    }
-	}
-
-	function pauseVideo() {
-		player.pauseVideo();
-		timer.pause();
-		//clearTimeouts();
-	}
-
-	function resumeVideo() {
-		player.playVideo();
-		timer.resume();
-	}
-</script>
-
-<h3><%= @playlist %></h3>
