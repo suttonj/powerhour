@@ -1,18 +1,46 @@
 <div class="row">
 	<div class="large-12 columns">
-		<h2>Power Hour</h2>
-		<p>Click the video to begin!</p>
-		<ul class="button-group radius">
-			<li><a href="javascript:pauseVideo()" class="button radius">Pause</a></li>
-			<li><a href="javascript:resumeVideo()" class="button radius">Play</a></li>
-		</ul>
+		<div class="row">
+			<div class="small-6 columns">
+				<%= image_tag("power-hour-logo.png", :size => "65x65", :class => "left inline") %>
+				<span class="inline"><h2>Video Power Hour</h2> </span>
+			</div>
+			<div class="small-6 columns">
+				<br />
+				<span data-tooltip class="has-tip tip-top" id="progress-tip" title="60 minutes remaining">
+					<label for="progress-bar" id="progress-text" class="right inline">60 minutes remaining</label>
+					<div class="progress large-6 radius">
+						<span class="meter" style="width: 0%" id="progress-bar"></span>
+					</div>
+				</span>
+				
+			</div>
+		</div>
 
-		<%= render 'search' %>
+		<div class="row">
+			<div class="small-6 columns">
+				<span id="playlistTitle">
+					<%= render 'layouts/playlist_title' %>
+				</span>
+				<ul class="button-group radius">
+					<li id="play"><a href="javascript:startVideo()" class="button radius">Start</a></li>
+					<li id="pause"><a href="javascript:pauseVideo()" class="button radius disabled">Pause</a></li>
+				</ul>
+				
 
-		<hr />
+			</div>
 
-		<%= render 'player' %>
+			<div class="small-6 columns">
+				<p> <%= render 'default_playlists' %> </p>
+				<p> <%= render 'search' %></p>
+			</div>
+		</div>
 
+		<div class="row">
+			<div class="large-12 column">
+				<%= render 'player' %>
+			</div>
+		</div>
 	</div>
 
 </div>

@@ -1,8 +1,8 @@
 
 <%= form_tag( {:controller => "playlists", :action => "search"}, :method => "get", :remote => true) do %>
-<!-- 		<%= label_tag(:id, "Enter Youtube Playlist ID:") %> -->
+<!-- 		<%= label_tag(:id, "Enter Youtube Playlist ID:") %> 
 	
-  	<div class="large-8 columns">
+  	<div class="large-6 columns"> -->
       	<div class="row collapse">
         	<div class="small-9 columns">
           	<%= text_field_tag(:id, nil, placeholder: 'Enter a YouTube playlist ID to search for.' ) %>
@@ -12,5 +12,5 @@
 
   			</div>
   		</div>
-  	</div>
+  <!-- 	</div> -->
 <% end %> 

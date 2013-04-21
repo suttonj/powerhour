@@ -1,5 +1,6 @@
 <div class="flex-video">
 	<div id="player">
+		<%= render 'layouts/placeholder' %>
 	</div>
 </div>
 
@@ -39,16 +40,16 @@
 
 	function onYouTubeIframeAPIReady() {
 
-	    player = new YT.Player('player', {
-	        height: '315',
-	        width: '420',
-	        videoId: '',
-	        playerVars: { 'controls': 0 },
-	        events: {
-	            'onReady': onPlayerReady,
-	            'onStateChange': onPlayerStateChange
-	        }
-	    });
+	    // player = new YT.Player('player', {
+	    //     height: '315',
+	    //     width: '420',
+	    //     videoId: '',
+	    //     playerVars: { 'controls': 0 },
+	    //     events: {
+	    //         'onReady': onPlayerReady,
+	    //         'onStateChange': onPlayerStateChange
+	    //     }
+	    // });
 	    
 	}
 
@@ -67,6 +68,7 @@
 	function onPlayerReady(event) {
 	    //event.target.playVideo();
 	    event.target.loadPlaylist(playlist, 0, 60, "default");
+	    //player.pauseVideo();
 	    player.setLoop(true);
 	    player.addEventListener("onError", "onPlayerError");
 	}
@@ -80,7 +82,9 @@
 	//play video for 60 seconds
 	var done = false, paused = false;
 	function onPlayerStateChange(event) {
-		if (event.data == YT.PlayerState.PAUSED) {
+		setPlayerControls(event.data);
+
+		if (event.data == YT.PlayerState.PAUSED && !paused) {
 			timer.pause();
 			paused = true;
 			return;
@@ -118,24 +122,72 @@
 	    	player.stopVideo();
 	    	alert('Done! ' + played + ' videos played.');
 	    }
+	    setProgressBar( (played/60 * 100) );
 	}
 
 	function pauseVideo() {
+		//setPlayerControls(2);
+		//timer.pause();
 		player.pauseVideo();
-		timer.pause();
-		paused = true;
+		//paused = true;
 		//clearTimeouts();
 	}
 
 	function resumeVideo() {
+		//setPlayerControls(1);
+		player.playVideo();
+	}
 
-		if (paused) {
-			player.playVideo();
-			if(timer != null)
-				timer.resume();
-			else
-				timer = new Timer(nextVideo, 6000);
-			paused = false;
-		}
+
+	/**
+	* player control button states:
+	* 0 - init
+	* 1 - started/playing
+	* 2 - paused
+	*/
+	function setPlayerControls(state) {
+
+	    var playButton = $("#play"), pauseButton = $("#pause");
+
+	    switch(state) {
+	    	case -2:
+	       		playButton.html("<a href=\"javascript:startVideo()\" class=\"button radius\">Start</a>");
+	        	pauseButton.html("<a href=\"javascript:void(0)\" class=\"button radius disabled\">Pause</a>");
+	        	break;
+	    	case 1:
+	       		playButton.html("<a href=\"javascript:void(0)\" class=\"button radius disabled\">Resume</a>");
+	        	pauseButton.html("<a href=\"javascript:pauseVideo()\" class=\"button radius\">Pause</a>");
+	        	break;
+	        case 2:
+	        	playButton.html("<a href=\"javascript:resumeVideo()\" class=\"button radius\">Resume</a>");
+	        	pauseButton.html("<a href=\"javascript:void(0)\" class=\"button radius disabled\">Pause</a>");
+	        	break;
+	    }
+
+	}
+
+	function setProgressBar(width) {
+		$(".meter").css("width", width); 
+		$("#progress-tip").attr("title", "" + (60 - played) + " minutes remaining");
+		$("#progress-text").html("" + (60 - played) + " minutes remaining");
+	}
+
+	function initPlayer() {
+		player = new YT.Player('player', {
+	        height: '315',
+	        width: '420',
+	        videoId: '',
+	        playerVars: { 'controls': 0 },
+	        events: {
+	            'onReady': onPlayerReady,
+	            'onStateChange': onPlayerStateChange
+	        }
+	    });
+	}
+
+	function startVideo() {
+		setPlayerControls(1);
+		initPlayer();
+		player.playVideo();
 	}
 </script>

@@ -1,7 +1,13 @@
+
 var playlist = <%= raw @playlist %>;
 timer.clear();
 timer = null;
 played = 0;
 
-player.loadPlaylist(playlist, 0, 60, "default");
-timer = new Timer(nextVideo, 6000);
+// player.loadPlaylist(playlist, 0, 60, "default");
+// timer = new Timer(nextVideo, 6000);
+player.destroy();
+$('#player').html('<%= escape_javascript(render("layouts/placeholder")).html_safe %>');
+setPlayerControls(-2);
+$('#playlistTitle').html('<%= render("layouts/playlist_title").html_safe %>')
+setProgressBar(0);
