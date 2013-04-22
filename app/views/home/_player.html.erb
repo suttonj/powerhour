@@ -6,6 +6,28 @@
 
 <script type="text/javascript">
 	//init_playlist(<%= raw @playlist %>); //TODO make this js more modular
+
+	function Timer(callback, delay) {
+	    var timerId, start, remaining = delay;
+
+	    this.pause = function() {
+	        window.clearTimeout(timerId);
+	        remaining -= new Date() - start;
+	    };
+
+	    this.resume = function() {
+	        start = new Date();
+	        timerId = window.setTimeout(callback, remaining);
+	    };
+
+	    this.clear = function() {
+	        window.clearTimeout(timerId);
+	    };
+
+	    this.resume();
+	}
+
+
 	var playlist = <%= raw @playlist %>;
 
 	var tag = document.createElement('script');

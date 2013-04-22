@@ -62,25 +62,25 @@ $(function() {
 });
 
 
-function Timer(callback, delay) {
-    var timerId, start, remaining = delay;
+// function Timer(callback, delay) {
+//     var timerId, start, remaining = delay;
 
-    this.pause = function() {
-        window.clearTimeout(timerId);
-        remaining -= new Date() - start;
-    };
+//     this.pause = function() {
+//         window.clearTimeout(timerId);
+//         remaining -= new Date() - start;
+//     };
 
-    this.resume = function() {
-        start = new Date();
-        timerId = window.setTimeout(callback, remaining);
-    };
+//     this.resume = function() {
+//         start = new Date();
+//         timerId = window.setTimeout(callback, remaining);
+//     };
 
-    this.clear = function() {
-        window.clearTimeout(timerId);
-    };
+//     this.clear = function() {
+//         window.clearTimeout(timerId);
+//     };
 
-    this.resume();
-}
+//     this.resume();
+// }
 
 
 $(document).ready(function() {
