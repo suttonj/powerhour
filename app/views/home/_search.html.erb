@@ -1,5 +1,5 @@
 
-<%= form_tag( {:controller => "playlists", :action => "search"}, :method => "get", :remote => true) do %>
+<%= form_tag( {:controller => "playlists", :action => "search"}, :method => "get", :remote => true, :onsubmit => "prepPlaylistRequest();") do %>
 <!-- 		<%= label_tag(:id, "Enter Youtube Playlist ID:") %> 
 	
   	<div class="large-6 columns"> -->

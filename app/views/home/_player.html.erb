@@ -13,43 +13,13 @@
 	var firstScriptTag = document.getElementsByTagName('script')[0];
 	firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-	// function Timer(callback, delay) {
-	//     var timerId, start, remaining = delay;
-
-	//     this.pause = function() {
-	//         window.clearTimeout(timerId);
-	//         remaining -= new Date() - start;
-	//     };
-
-	//     this.resume = function() {
-	//         start = new Date();
-	//         timerId = window.setTimeout(callback, remaining);
-	//     };
-
-	//     this.clear = function() {
-	//     	window.clearTimeout(timerId);
-	//     };
-
-	//     this.resume();
-	// }
-
+	
 	var player;
 	var timeouts = [];
 	var timer;
 	var played = 0;
 
 	function onYouTubeIframeAPIReady() {
-
-	    // player = new YT.Player('player', {
-	    //     height: '315',
-	    //     width: '420',
-	    //     videoId: '',
-	    //     playerVars: { 'controls': 0 },
-	    //     events: {
-	    //         'onReady': onPlayerReady,
-	    //         'onStateChange': onPlayerStateChange
-	    //     }
-	    // });
 	    
 	}
 
@@ -98,7 +68,7 @@
 			    if (player.getPlaylistIndex() != 0)
 		    		player.seekTo(91, true);	
 
-		    	timer = new Timer(nextVideo, 6000);
+		    	timer = new Timer(nextVideo, 60000);
 		        //timeouts.push( timer );
 	    	}
 	    	else if (paused) {
@@ -126,15 +96,10 @@
 	}
 
 	function pauseVideo() {
-		//setPlayerControls(2);
-		//timer.pause();
 		player.pauseVideo();
-		//paused = true;
-		//clearTimeouts();
 	}
 
 	function resumeVideo() {
-		//setPlayerControls(1);
 		player.playVideo();
 	}
 
@@ -190,6 +155,22 @@
 	function startVideo() {
 		setPlayerControls(1);
 		initPlayer();
+
+		//scroll to player
+		$('html, body').animate({
+        	scrollTop: $("#player").offset().top
+     	}, 1000);
+
 		player.playVideo();
+	}
+
+	function prepPlaylistRequest() {
+
+		if (player != null) {
+			player.destroy();
+		}           
+
+		$('#player').empty();
+		$('#player').html("<div class=\"load-container\"><div class=\"load-content\"><div class=\"ball\"></div><div class=\"ball1\"></div></div></div>");
 	}
 </script>

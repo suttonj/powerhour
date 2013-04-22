@@ -7,12 +7,7 @@
 			</div>
 			<div class="small-6 columns">
 				<br />
-				<span data-tooltip class="has-tip tip-top" id="progress-tip" title="60 minutes remaining">
-					<label for="progress-bar" id="progress-text" class="right inline">60 minutes remaining</label>
-					<div class="progress large-6 radius">
-						<span class="meter" style="width: 0%" id="progress-bar"></span>
-					</div>
-				</span>
+				<p> <%= render 'default_playlists' %> </p>
 				
 			</div>
 		</div>
@@ -31,8 +26,13 @@
 			</div>
 
 			<div class="small-6 columns">
-				<p> <%= render 'default_playlists' %> </p>
-				<p> <%= render 'search' %></p>
+				<%= render 'search' %>
+				<!-- <span data-tooltip class="has-tip tip-top" id="progress-tip" title="60 minutes remaining"> -->
+					<label for="progress-bar" id="progress-text" class="right inline">60 minutes remaining</label>
+					<div class="progress large-6 radius">
+						<span class="meter" style="width: 0%" id="progress-bar"></span>
+					</div>
+				<!-- </span> -->
 			</div>
 		</div>
 

@@ -81,9 +81,11 @@ function Timer(callback, delay) {
 
     this.resume();
 }
-    
+
 
 $(document).ready(function() {
+
+    $('a').bind("click", prepPlaylistRequest);
 //     var playlist = <%= raw @playlist %>;
 
 //     var tag = document.createElement('script');
