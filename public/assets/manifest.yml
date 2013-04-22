@@ -3,10 +3,10 @@ power-hour-logo.png: power-hour-logo-f8c9d53c1b6919012334b2b61d9f281e.png
 power-hour-logo/index.png: power-hour-logo-f8c9d53c1b6919012334b2b61d9f281e.png
 rails.png: rails-a3386665c05a2d82f711a4aaa72d247c.png
 rails/index.png: rails-a3386665c05a2d82f711a4aaa72d247c.png
-application.js: application-ede7e98506321d8297678251b432041a.js
-application/index.js: application-ede7e98506321d8297678251b432041a.js
-application.css: application-13237298443988a94c39fc5fb79f0121.css
-application/index.css: application-13237298443988a94c39fc5fb79f0121.css
+application.js: application-7bfe02d18dc00a7fda0169185353227f.js
+application/index.js: application-7bfe02d18dc00a7fda0169185353227f.js
+application.css: application-621cbde5ab37d78b3cbee24b7f4a7ab5.css
+application/index.css: application-621cbde5ab37d78b3cbee24b7f4a7ab5.css
 jquery.js: jquery-186cad25611b3c790cb50517ee029d2a.js
 jquery/index.js: jquery-186cad25611b3c790cb50517ee029d2a.js
 jquery.min.map: jquery.min-6c267bfd2b3f36e6edccb2e584934c1c.map
