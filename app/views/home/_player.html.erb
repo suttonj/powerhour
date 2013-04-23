@@ -27,17 +27,7 @@
 	    this.resume();
 	}
 
-	function prepPlaylistRequest() {
 
-		if (player != null) {
-			player.destroy();
-		}           
-
-		$('#player').empty();
-		$('#player').html("<div class=\"load-container\"><div class=\"load-content\"><div class=\"circle\"></div><div class=\"circle1\"></div></div></div>");
-	}
-
-	//begin player initialize
 	var playlist = <%= raw @playlist %>;
 
 	var tag = document.createElement('script');
@@ -196,5 +186,13 @@
 		player.playVideo();
 	}
 
-	
+	function prepPlaylistRequest() {
+
+		if (player != null) {
+			player.destroy();
+		}           
+
+		$('#player').empty();
+		$('#player').html("<div class=\"load-container\"><div class=\"load-content\"><div class=\"circle\"></div><div class=\"circle1\"></div></div></div>");
+	}
 </script>
