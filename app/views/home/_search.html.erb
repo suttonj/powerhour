@@ -1,11 +1,11 @@
 
-<%= form_tag( {:controller => "playlists", :action => "search"}, :method => "get", :remote => true, :onsubmit => "prepPlaylistRequest();") do %>
+<%= form_tag( {:controller => "playlists", :action => "search"}, :method => "get", :remote => true, :onsubmit => "prepPlaylistRequest();", :builder => Judge::FormBuilder) do %>
 <!-- 		<%= label_tag(:id, "Enter Youtube Playlist ID:") %> 
 	
   	<div class="large-6 columns"> -->
       	<div class="row collapse">
         	<div class="small-9 columns">
-          	<%= text_field_tag(:id, nil, placeholder: 'Enter a YouTube playlist ID to search for.' ) %>
+          	<%= text_field_tag(:id, nil, :validate => true, placeholder: 'Enter a YouTube playlist ID to search for.' ) %>
         	</div>
         	<div class="small-3 columns">
     			<%= submit_tag("Find playlist", :class => "button postfix") %> 
