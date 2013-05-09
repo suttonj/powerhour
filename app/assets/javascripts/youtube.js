@@ -49,6 +49,4 @@ $(function() {
 
 $(document).ready(function() {
 
-    $('a').bind("click", prepPlaylistRequest);
-
 });

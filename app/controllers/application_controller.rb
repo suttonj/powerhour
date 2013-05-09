@@ -12,13 +12,19 @@ class ApplicationController < ActionController::Base
 
   def simple_youtube(playlist_id)
     #simple youtube
-    playlist_query = Youtube::Playlist.find(:scope => playlist_id, :params => {:"max-results" => '50', :v => '2'})
-    playlist_videos = playlist_query.entry.map do |entry|
-      entry = entry.group.videoid
-    end
+    begin
+      playlist_query = Youtube::Playlist.find(:scope => playlist_id, :params => {:"max-results" => '50', :v => '2'})
+      playlist_videos = playlist_query.entry.map do |entry|
+        entry = entry.group.videoid
+      end
 
-    @playlistTitle = playlist_query.title
-    @playlist = playlist_videos.shuffle
+      @playlistTitle = playlist_query.title
+      @playlist = playlist_videos.shuffle
+
+    rescue
+      @playlist = nil
+    end
+    
   end
 
 end

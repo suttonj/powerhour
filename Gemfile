@@ -46,7 +46,7 @@ gem "binding_of_caller", ">= 0.6.8", :group => :development
 gem "compass-rails", :group => :development
 gem "simple_youtube", ">= 4.0"
 gem "youtube_it"
-gem "judge"
+gem "client_side_validations"
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

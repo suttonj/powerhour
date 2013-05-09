@@ -186,24 +186,45 @@
 		player.playVideo();
 	}
 
-	function prepPlaylistRequest() {
+	function prepPlaylistRequest(e) {
 
-		//validate
-		judge.validate(document.getElementById('id'), {
-		  valid: function(element) {
-		    element.style.border = '1px solid green';
-		  },
-		  invalid: function(element, messages) {
-		    element.style.border = '1px solid red';
-		    alert(messages.join(','));
-		  }
-		});
+		var confirmed = false;
 
-		if (player != null) {
-			player.destroy();
-		}           
+		if (player == null) {
+			confirmed = true;
+		}
+		else {
+			confirmed = confirm("Are you sure you want to stop the power hour?");
+		}
 
-		$('#player').empty();
-		$('#player').html("<div class=\"load-container\"><div class=\"load-content\"><div class=\"circle\"></div><div class=\"circle1\"></div></div></div>");
+		if(confirmed) 
+		{
+			//validate
+			judge.validate(document.getElementById('id'), {
+			  valid: function(element) {
+			    element.style.border = '1px solid green';
+			  },
+			  invalid: function(element, messages) {
+			    element.style.border = '1px solid red';
+			    alert(messages.join(','));
+			  }
+			});
+
+			if (player != null) {
+				player.destroy();
+			}           
+
+			$('#player').empty();
+			$('#player').html("<div class=\"load-container\"><div class=\"load-content\"><div class=\"circle\"></div><div class=\"circle1\"></div></div></div>");
+
+			return true;
+		}
+		else {
+			//cancel form submission code here
+    		e.preventDefault();
+    		e.stopPropagation();
+    		return false;
+		}
 	}
+
 </script>

@@ -1,0 +1,26 @@
+$('#player').empty();
+
+//player start splash
+$('#player').html('<%= escape_javascript(render @output).html_safe %>');
+setPlayerControls(-2);
+$('#playlistTitle').html('<%= escape_javascript(render("layouts/playlist_title")).html_safe %>');
+setProgressBar(0);
+
+$('#id').val('');
+
+<% if !@playlist.nil? %>
+	var playlist = <%= raw @playlist %>;
+
+	if(timer != null) {
+		timer.clear();
+		timer = null;
+	}
+
+	played = 0;
+
+	
+
+<% else %>
+	alert(<% @message %>);
+
+<% end %>

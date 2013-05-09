@@ -1,11 +1,11 @@
 
-<%= form_tag( {:controller => "playlists", :action => "search"}, :method => "get", :remote => true, :onsubmit => "prepPlaylistRequest();", :builder => Judge::FormBuilder) do %>
+<%= form_tag( {:controller => "playlists", :action => "create"}, :validate => true, :method => "get", :remote => true, :onsubmit => "prepPlaylistRequest(event);") do %>
 <!-- 		<%= label_tag(:id, "Enter Youtube Playlist ID:") %> 
-	
+	1
   	<div class="large-6 columns"> -->
       	<div class="row collapse">
         	<div class="small-9 columns">
-          	<%= text_field_tag(:id, nil, :validate => true, placeholder: 'Enter a YouTube playlist ID to search for.' ) %>
+          	<%= text_field_tag(:id, nil, :validate => { :presence => true }, placeholder: 'Enter a YouTube playlist ID to search for.' ) %>
         	</div>
         	<div class="small-3 columns">
     			<%= submit_tag("Find playlist", :class => "button postfix") %> 
@@ -14,3 +14,17 @@
   		</div>
   <!-- 	</div> -->
 <% end %> 
+
+<script type="text/javascript">
+
+ judge.validate(document.getElementById('id'), {
+  valid: function(element) {
+    element.style.border = '1px solid green';
+  },
+  invalid: function(element, messages) {
+    element.style.border = '1px solid red';
+    alert(messages.join(','));
+  }
+});
+
+</script>

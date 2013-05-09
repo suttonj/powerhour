@@ -1,6 +1,7 @@
 Dionysus::Application.routes.draw do
 
   get "playlists/search"
+  get "playlists/create"
 
   authenticated :user do
     root :to => 'home#index'
@@ -10,8 +11,6 @@ Dionysus::Application.routes.draw do
 
   devise_for :users
   resources :users
-
-  mount Judge::Engine => '/judge'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
