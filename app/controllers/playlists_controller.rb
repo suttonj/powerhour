@@ -32,12 +32,12 @@ class PlaylistsController < ApplicationController
 			@output = "layouts/placeholder"
 			@playlist = ytplaylist
 		end
-	else
-		
+	
+	else	
 		ytplaylist = simple_youtube(params[:id])
 
 	 	if !ytplaylist.nil? 
- 			playlist_record = Playlist.new( :ytid => params[:id], :name => @playlistTitle )
+				playlist_record = Playlist.new( :ytid => params[:id], :name => @playlistTitle )
 	    	
 	    	if playlist_record.save
 	    		@message = "Success!"
