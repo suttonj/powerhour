@@ -1,14 +1,14 @@
 
-<%= link_to "Electronic/House", playlists_search_path(:id => 'PLhM36HkgFAEapoyxesBgNGTEtZLjy66eD'), :remote => true %>
+<%= link_to "Electronic/House", playlists_search_path(:id => 'PLhM36HkgFAEapoyxesBgNGTEtZLjy66eD'), :class => "playlist-link", :remote => true %>
 &nbsp;&nbsp;&nbsp;
-<%= link_to "Pop/Top 40", playlists_search_path(:id => 'PLhM36HkgFAEbz26ztdP_ePVXUMqix_sVt'), :remote => true %>
+<%= link_to "Pop/Top 40", playlists_search_path(:id => 'PLhM36HkgFAEbz26ztdP_ePVXUMqix_sVt'), :class => "playlist-link", :remote => true %>
 &nbsp;&nbsp;&nbsp;
-<%= link_to "Hip-hop", playlists_search_path(:id => 'PLhM36HkgFAEYRfbClC6JlJTWcsgK-pOAy'), :remote => true %>
+<%= link_to "Hip-hop", playlists_search_path(:id => 'PLhM36HkgFAEYRfbClC6JlJTWcsgK-pOAy'), :class => "playlist-link", :remote => true %>
 &nbsp;&nbsp;&nbsp;
-<a href="javascript:void(0);" data-dropdown="playlistmenu">Other playlists</a>
+<span style="display: inline;"><a href="javascript:void(0);" data-dropdown="playlistmenu">Other playlists</a></span>
 
 <ul id="playlistmenu" class="f-dropdown" data-dropdown-content>
-  <li><a href="#">This is a link</a></li>
-  <li><a href="#">This is another</a></li>
-  <li><a href="#">Yet another</a></li>
+  <% @playlists.each do |p| %>
+  <li><%= link_to p.name, playlists_search_path(:id => p.ytid), :class => "playlist-link", :remote => true %></li>
+  <% end %>
 </ul>
