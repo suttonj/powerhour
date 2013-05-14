@@ -21,7 +21,6 @@
 					<li id="play"><a href="javascript:startVideo()" class="button radius">Start</a></li>
 					<li id="pause"><a href="javascript:void(0)" class="button radius disabled">Pause</a></li>
 				</ul>
-				
 
 			</div>
 
@@ -47,6 +46,19 @@
 
 <script>
 $(document).ready(function() {
+	var currentXHR;
+
 	$('.playlist-link').bind('click', prepPlaylistRequest);
+	$('.playlist-link').bind('ajax:beforeSend', function(event, jqXHR) {
+		
+		if (currentXHR != null) {
+			currentXHR.abort();
+		}
+		
+		currentXHR = jqXHR; // Cache the XHR request
+  		
+	});
+
+	
 });
 </script>
