@@ -3,6 +3,8 @@ Dionysus::Application.routes.draw do
   get "playlists/search"
   get "playlists/create"
 
+  match 'videos' => 'videos#index'
+
   authenticated :user do
     root :to => 'home#index'
   end

@@ -48,6 +48,8 @@ gem "simple_youtube", ">= 4.0"
 gem "youtube_it"
 gem "client_side_validations"
 
+gem "nokogiri"
+gem "httparty"
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
