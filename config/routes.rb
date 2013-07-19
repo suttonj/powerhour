@@ -4,7 +4,7 @@ Dionysus::Application.routes.draw do
   get "playlists/create"
 
   match 'videos' => 'videos#index'
-
+  
   authenticated :user do
     root :to => 'home#index'
   end
@@ -12,7 +12,7 @@ Dionysus::Application.routes.draw do
   root :to => "home#index"
 
   devise_for :users
-  resources :users
+  resources :users, :videos
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

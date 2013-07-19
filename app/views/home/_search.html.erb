@@ -1,8 +1,6 @@
 
 <%= form_tag( {:controller => "playlists", :action => "create"}, :validate => true, :method => "get", :remote => true, :onsubmit => "prepPlaylistRequest(event);") do %>
-<!-- 		<%= label_tag(:id, "Enter Youtube Playlist ID:") %> 
-	1
-  	<div class="large-6 columns"> -->
+
       	<div class="row collapse">
         	<div class="small-9 columns">
           	<%= text_field_tag(:id, nil, :validate => { :presence => true }, placeholder: 'Enter a YouTube playlist ID to search for.' ) %>
@@ -12,7 +10,6 @@
 
   			</div>
   		</div>
-  <!-- 	</div> -->
 <% end %> 
 
 <script type="text/javascript">

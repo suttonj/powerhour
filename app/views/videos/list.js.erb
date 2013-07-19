@@ -1,0 +1,43 @@
+$('#player').empty();
+
+//player start splash
+$('#player').html('<%= escape_javascript(render @output).html_safe %>');
+setPlayerControls(-2);
+$('#playlistTitle').html('<%= escape_javascript(render("layouts/playlist_title")).html_safe %>');
+setProgressBar(0);
+
+$('#id').val('');
+
+<% if !@playlist.nil? %>
+	var playlist = <%= raw @playlist %>;
+
+	if(timer != null) {
+		timer.clear();
+		timer = null;
+	}
+
+	played = 0;
+
+	
+
+<% else %>
+
+	// FLASH NOTICE ANIMATION
+	var fade_flash = function() {
+	    $("#flash_notice").delay(5000).fadeOut("slow");
+	    $("#flash_alert").delay(5000).fadeOut("slow");
+	    $("#flash_error").delay(5000).fadeOut("slow");
+	};
+	fade_flash();
+
+	var show_ajax_message = function(msg, type) {
+	    $("#flash-message").html('<div id="flash_'+type+'">'+msg+'</div>');
+	    fade_flash();
+	};
+
+	$("#flash-message").ajaxComplete(function(event, request) {
+	    var msg = request.getResponseHeader('X-Message');
+	    var type = request.getResponseHeader('X-Message-Type');
+	    show_ajax_message(msg, type); //use whatever popup, notification or whatever plugin you want
+	});
+<% end %>

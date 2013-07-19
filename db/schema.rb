@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130413202043) do
+ActiveRecord::Schema.define(:version => 20130719210537) do
 
   create_table "playlists", :force => true do |t|
     t.string   "ytid"
@@ -44,6 +44,7 @@ ActiveRecord::Schema.define(:version => 20130413202043) do
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.string   "genre"
   end
 
 end
