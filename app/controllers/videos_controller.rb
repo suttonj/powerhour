@@ -93,13 +93,16 @@ class VideosController < ApplicationController
   			view_count = stats_results["items"][0]["statistics"]["viewCount"]
   			if view_count.to_i > 600000
   				video = Video.new(:name => name, :ytid => ytid, :genre => genre)
-  				video.save
-  				puts "#{name} saved"
-  				count = count + 1
+  				if video.save
+  					puts "#{name} saved"
+  					count = count + 1
 
-  				metavid[:ytid] = ytid
-  				metavid[:viewcount] = view_count
-  				metavid[:pos] = count
+  					metavid[:ytid] = ytid
+  					metavid[:viewcount] = view_count
+  					metavid[:pos] = count
+  				else
+  					Logger.error video.errors
+  				end
   			end
   		end
   	end
