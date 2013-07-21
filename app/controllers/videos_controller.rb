@@ -1,7 +1,7 @@
-require 'open-uri'
-require 'nokogiri'
-
 class VideosController < ApplicationController
+  require 'open-uri'
+  require 'nokogiri'
+
   protect_from_forgery
 
   def index
