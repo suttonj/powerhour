@@ -3,6 +3,8 @@ class VideosController < ApplicationController
   require 'nokogiri'
 
   protect_from_forgery
+  
+  before_filter :authenticate, :except => [:show, :list]
 
   def index
   	#genre = params[:genre]
@@ -26,15 +28,15 @@ class VideosController < ApplicationController
     @playlistTitle = "Billboard Top-100"
 
     if @playlist.nil? 
-		#flash[:error] = "Unable to find playlist on Youtube"
-		@output = "layouts/error"
-	else
-		@output = "layouts/placeholder"
-	end
+  		#flash[:error] = "Unable to find playlist on Youtube"
+  		@output = "layouts/error"
+  	else
+  		@output = "layouts/placeholder"
+  	end
 
-	respond_to do |format|
-		format.js
-	end
+  	respond_to do |format|
+  		format.js
+  	end
 
   end
 
@@ -51,24 +53,25 @@ class VideosController < ApplicationController
   	@videos = Array.new
   	(0..9).each do |page|
 	  	doc = Nokogiri::HTML(open(url + "?page=#{page}"))
-		titles = Array.new
-		artists = Array.new
-		
-		doc.xpath('//article/header/h1')[0..9].each do |title|
-			titles.push(title.text)
-		end
-		doc.xpath('//article/header/p')[0..9].each do |artist|
-			artists.push(artist.text)
-		end
+		  titles = Array.new
+  		artists = Array.new
+  		
+  		doc.xpath('//article/header/h1')[0..9].each do |title|
+  			titles.push(title.text)
+  		end
+  		doc.xpath('//article/header/p')[0..9].each do |artist|
+  			artists.push(artist.text)
+  		end
 
-		(0..9).each do |index| 
-			if !titles[index].nil? and !artists[index].nil?
-				video = { :title => titles[index], :artist => artists[index] }
-				@videos.push(video)
-			end
-		end
-	end
-	return @videos
+  		(0..9).each do |index| 
+  			if !titles[index].nil? and !artists[index].nil?
+  				video = { :title => titles[index], :artist => artists[index] }
+  				@videos.push(video)
+  			end
+  		end
+  	end
+
+  	return @videos
   end
 
   def save_video_info(meta_videos, genre)

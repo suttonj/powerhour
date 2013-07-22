@@ -1,6 +1,12 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
+  helper_method :logged_in?
+
+  def logged_in?
+    session[:login]
+  end
+
   def get_playlist_from_youtube(playlist_id)
   	client = YouTubeIt::Client.new(:dev_key => ENV['API_KEY'])
   	playlist_videos = client.playlist(playlist_id, :max_results => 60)
@@ -27,4 +33,15 @@ class ApplicationController < ActionController::Base
     
   end
 
+  private
+  def authenticate
+    login = authenticate_or_request_with_http_basic do |username, password|
+      username == ENV['DB_USER'] && password == ENV['DB_PASS']
+    end
+    session[:login] = login
+  end
+
+  def do_logout
+    session[:login] = nil
+  end
 end
