@@ -7,9 +7,17 @@ class VideosController < ApplicationController
   before_filter :authenticate, :except => [:show, :list]
 
   def index
-  	#genre = params[:genre]
-  	@videos = get_billboard('hot')
-	save_video_info(@videos, 'hot')
+  	genre = params[:genre]
+    puts genre
+  	case genre
+    when 'electronic'
+      @videos = get_beatport()
+      #@videos << get_official_charts(genre)
+    when 'hot'
+      @videos = get_billboard(genre)
+    end
+    
+	  save_video_info(@videos, genre)
   end
 
 
@@ -57,11 +65,17 @@ class VideosController < ApplicationController
   		artists = Array.new
   		
   		doc.xpath('//article/header/h1')[0..9].each do |title|
-  			titles.push(title.text)
+  			#puts title.text 
+        titles.push(title.text)
   		end
-  		doc.xpath('//article/header/p')[0..9].each do |artist|
-  			artists.push(artist.text)
-  		end
+  		doc.xpath('//article/header/p/a')[0..9].each do |artist, index|
+  			 puts artist.text 
+         if artist.text.nil?
+            artists.push(' ');
+         else
+            artists.push(artist.text)
+  		   end
+      end
 
   		(0..9).each do |index| 
   			if !titles[index].nil? and !artists[index].nil?
@@ -72,6 +86,85 @@ class VideosController < ApplicationController
   	end
 
   	return @videos
+  end
+
+  def get_beatport()
+    url = "http://www.beatport.com/top-100"
+
+    @videos = Array.new
+    
+    doc = Nokogiri::HTML(open(url))
+    titles = Array.new
+    artists = Array.new
+    
+    doc.css('tr.track-grid-content').each do |track|
+      #puts "TRACK --- "
+      links = track.xpath('td')
+      title = links[3]
+      artist = links[4]
+      
+      title = title.text.gsub(/\((.*)\)/,'')
+      artist = artist.text.gsub(/\,/, '')
+      #puts title << ' -- ' << artist
+
+      titles.push(title)
+      artists.push(artist)
+
+    end
+
+    #puts "artists: " << artists.count << ", titles: " << titles.count
+    (0..60).each do |index| 
+      if !titles[index].nil? and !artists[index].nil?
+        video = { :title => titles[index], :artist => artists[index] }
+        @videos.push(video)
+      end
+    end
+    
+    puts "VIDEO COUNT = " << @videos.count
+    return @videos
+  end
+
+  def get_official_charts(genre)
+    case genre
+    when "edm", "electronic"
+      url = "http://www.officialcharts.com/dance-charts/"
+    end
+
+    @videos = Array.new
+    doc = Nokogiri::HTML(open(url))
+    titles = Array.new
+    artists = Array.new
+    
+    # doc.css('.info').each do |track|
+    #   title = track.xpath('h3')
+    #   artist = track.xpath('h4')
+
+    #   title = title.text.gsub(/\((.*)\)/,'')
+    #   artist = artist.text.gsub(/\//, '')
+    #   puts title << ' -- ' << artist
+
+    #   titles.push(title)
+    #   artists.push(artist)
+
+    # end
+    doc.xpath('//table/tbody/tr/td/div/h3').each do |title|
+      puts title.text 
+      titles.push(title.text)
+    end
+    doc.xpath('//table/tbody/tr/td/div/h3').each do |artist|
+      puts artist.text
+      artists.push(artist.text)
+    end
+
+    #puts "artists: " << artists.count << ", titles: " << titles.count
+    (0..40).each do |index| 
+      if !titles[index].nil? and !artists[index].nil?
+        video = { :title => titles[index], :artist => artists[index] }
+        @videos.push(video)
+      end
+    end
+
+    return @videos
   end
 
   def save_video_info(meta_videos, genre)
@@ -94,8 +187,9 @@ class VideosController < ApplicationController
   			stats_results = JSON.parse(HTTParty.get(stats_url).body)
   			puts stats_results["items"][0]["statistics"]["viewCount"]
   			view_count = stats_results["items"][0]["statistics"]["viewCount"]
-  			if view_count.to_i > 600000
-  				video = Video.new(:name => name, :ytid => ytid, :genre => genre)
+  			if view_count.to_i > 50000
+  			#if search_results["items"][0]["snippet"]["title"].downcase.include? metavid[:title].downcase
+        	video = Video.new(:name => name, :ytid => ytid, :genre => genre)
   				video.save
   				puts "#{name} saved"
   				count = count + 1
