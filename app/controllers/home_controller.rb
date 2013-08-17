@@ -14,7 +14,7 @@ class HomeController < ApplicationController
     #simple_youtube(playlist_id)
 
     #top videos from billboard
-    top60 = Video.find_all_by_genre("hot").first(60)
+    top60 = Video.find_all_by_genre("electronic").first(60)
     ytid_list = top60.map do |video|
         video = video.ytid
     end

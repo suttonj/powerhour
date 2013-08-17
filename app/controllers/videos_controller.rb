@@ -11,8 +11,14 @@ class VideosController < ApplicationController
     puts genre
   	case genre
     when 'electronic'
-      @videos = get_beatport()
-      #@videos << get_official_charts(genre)
+      beatport = get_beatport()
+      officialcharts = get_official_charts(genre)
+      console.log("BEATPORT ----- +++++")
+      console.log(beatport)
+      console.log("OFFICIAL ------ ++++++")
+      console.log(officialcharts)
+
+      @videos = beatport + officialcharts
     when 'hot'
       @videos = get_billboard(genre)
     end
@@ -27,13 +33,18 @@ class VideosController < ApplicationController
   end
 
   def list
-  	top60 = Video.find_all_by_genre("hot").first(60)
+  	top60 = Video.find_all_by_genre(params[:genre]).first(60)
     ytid_list = top60.map do |video|
         video = video.ytid
     end
     
     @playlist = ytid_list.reverse
-    @playlistTitle = "Billboard Top-100"
+    case params[:genre]
+    when 'electronic'
+      @playlistTitle = "Top Electronic Videos"
+    when 'hot'
+      @playlistTitle = "Billboard Top-100"
+    end
 
     if @playlist.nil? 
   		#flash[:error] = "Unable to find playlist on Youtube"
@@ -125,10 +136,10 @@ class VideosController < ApplicationController
   end
 
   def get_official_charts(genre)
-    case genre
-    when "edm", "electronic"
+    #case genre
+    #when "edm", "electronic"
       url = "http://www.officialcharts.com/dance-charts/"
-    end
+    #end
 
     @videos = Array.new
     doc = Nokogiri::HTML(open(url))
@@ -147,16 +158,16 @@ class VideosController < ApplicationController
     #   artists.push(artist)
 
     # end
-    doc.xpath('//table/tbody/tr/td/div/h3').each do |title|
+    doc.css('.infoHolder > h3').each do |title|
       puts title.text 
       titles.push(title.text)
     end
-    doc.xpath('//table/tbody/tr/td/div/h3').each do |artist|
+    doc.css('.infoHolder > h4').each do |artist|
       puts artist.text
       artists.push(artist.text)
     end
 
-    #puts "artists: " << artists.count << ", titles: " << titles.count
+    puts "artists: " << artists.count << ", titles: " << titles.count
     (0..40).each do |index| 
       if !titles[index].nil? and !artists[index].nil?
         video = { :title => titles[index], :artist => artists[index] }

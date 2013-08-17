@@ -1,1 +1,8 @@
-<h5>Now Playing:<b> <%= @playlistTitle %> </b></h5>
+<h5>Playlist:<b> 
+<a id="select_playlist" href="#" data-dropdown="playlists"><%= @playlistTitle %></a>
+<ul id="playlists" class="f-dropdown" data-dropdown-content>
+  <li><%= link_to "Electronic/House", videos_list_path(:genre => 'electronic'), :class => "playlist-link", :remote => true %></li>
+  <li><%= link_to "Top 60 Billboard", videos_list_path(:genre => 'hot'), :class => "playlist-link", :remote => true %></li>
+  <li><%= link_to "Electronic/House", videos_list_path(:genre => 'electronic'), :class => "playlist-link", :remote => true %></li>
+</ul>
+</b></h5>

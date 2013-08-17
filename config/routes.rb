@@ -2,6 +2,7 @@ Dionysus::Application.routes.draw do
 
   get "playlists/search"
   get "playlists/create"
+  get "videos/list"
 
   match 'videos' => 'videos#index'
   
