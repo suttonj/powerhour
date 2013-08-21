@@ -7,17 +7,13 @@ class VideosController < ApplicationController
   before_filter :except => [:show, :list]
 
   def index
-  	genre = params[:genre]
-    puts genre
-  	case genre
-    when 'electronic'
-      beatport = get_beatport()
-      officialcharts = get_official_charts(genre)
-      @videos = beatport + officialcharts
-    when 'hot'
-      @videos = get_billboard(genre)
-    end
-    
+    #electronic
+    beatport = get_beatport()
+    officialcharts = get_official_charts(genre)
+    @videos = beatport + officialcharts
+    save_video_info(@videos, genre)
+    #hot
+    @videos = get_billboard(genre)
 	  save_video_info(@videos, genre)
   end
 
@@ -140,19 +136,7 @@ class VideosController < ApplicationController
     doc = Nokogiri::HTML(open(url))
     titles = Array.new
     artists = Array.new
-    
-    # doc.css('.info').each do |track|
-    #   title = track.xpath('h3')
-    #   artist = track.xpath('h4')
 
-    #   title = title.text.gsub(/\((.*)\)/,'')
-    #   artist = artist.text.gsub(/\//, '')
-    #   puts title << ' -- ' << artist
-
-    #   titles.push(title)
-    #   artists.push(artist)
-
-    # end
     doc.css('.infoHolder > h3').each do |title|
       puts title.text 
       titles.push(title.text)
