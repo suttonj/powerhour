@@ -4,7 +4,7 @@ class VideosController < ApplicationController
 
   protect_from_forgery
   
-  before_filter :authenticate, :except => [:show, :list]
+  before_filter :except => [:show, :list]
 
   def index
   	genre = params[:genre]
