@@ -13,11 +13,6 @@ class VideosController < ApplicationController
     when 'electronic'
       beatport = get_beatport()
       officialcharts = get_official_charts(genre)
-      console.log("BEATPORT ----- +++++")
-      console.log(beatport)
-      console.log("OFFICIAL ------ ++++++")
-      console.log(officialcharts)
-
       @videos = beatport + officialcharts
     when 'hot'
       @videos = get_billboard(genre)
