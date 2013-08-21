@@ -8,11 +8,13 @@ class VideosController < ApplicationController
 
   def index
     #electronic
+    genre = "electronic"
     beatport = get_beatport()
     officialcharts = get_official_charts(genre)
     @videos = beatport + officialcharts
     save_video_info(@videos, genre)
     #hot
+    genre = "hot"
     @videos = get_billboard(genre)
 	  save_video_info(@videos, genre)
   end
