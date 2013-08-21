@@ -4,7 +4,7 @@ class VideosController < ApplicationController
 
   protect_from_forgery
   
-  before_filter :except => [:show, :list]
+  before_filter :authenticate, :except => [:show, :list]
 
   def index
     #electronic
@@ -166,31 +166,33 @@ class VideosController < ApplicationController
 
   	count = 0
   	meta_videos.each do |metavid|
-  		query = URI.encode(metavid[:title].split(' ').join('+') << '+' << metavid[:artist].split(' ').join('+') << '+official+video')
-  		search_url = "https://www.googleapis.com/youtube/v3/search?part=snippet&order=relevance&q=#{query}&type=video&key=#{ENV['API_KEY2']}"
-  		response = HTTParty.get(search_url)
-  		search_results = JSON.parse(response.body)
-  		if !search_results["items"].nil?
-  			puts search_results["items"][0]["id"]["videoId"]
-  			name = search_results["items"][0]["snippet"]["title"]
-  			ytid = search_results["items"][0]["id"]["videoId"]
-  			
-  			stats_url = "https://www.googleapis.com/youtube/v3/videos?part=statistics&id=#{ytid}&key=#{ENV['API_KEY2']}"
-  			stats_results = JSON.parse(HTTParty.get(stats_url).body)
-  			puts stats_results["items"][0]["statistics"]["viewCount"]
-  			view_count = stats_results["items"][0]["statistics"]["viewCount"]
-  			if view_count.to_i > 50000
-  			#if search_results["items"][0]["snippet"]["title"].downcase.include? metavid[:title].downcase
-        	video = Video.new(:name => name, :ytid => ytid, :genre => genre)
-  				video.save
-  				puts "#{name} saved"
-  				count = count + 1
+      if !metavid.nil? and !metavid[:title].nil?
+    		query = URI.encode(metavid[:title].split(' ').join('+') << '+' << metavid[:artist].split(' ').join('+') << '+official+video')
+    		search_url = "https://www.googleapis.com/youtube/v3/search?part=snippet&order=relevance&q=#{query}&type=video&key=#{ENV['API_KEY2']}"
+    		response = HTTParty.get(search_url)
+    		search_results = JSON.parse(response.body)
+    		if !search_results["items"].nil?
+    			puts search_results["items"][0]["id"]["videoId"]
+    			name = search_results["items"][0]["snippet"]["title"]
+    			ytid = search_results["items"][0]["id"]["videoId"]
+    			
+    			stats_url = "https://www.googleapis.com/youtube/v3/videos?part=statistics&id=#{ytid}&key=#{ENV['API_KEY2']}"
+    			stats_results = JSON.parse(HTTParty.get(stats_url).body)
+    			puts stats_results["items"][0]["statistics"]["viewCount"]
+    			view_count = stats_results["items"][0]["statistics"]["viewCount"]
+    			if view_count.to_i > 50000
+    			#if search_results["items"][0]["snippet"]["title"].downcase.include? metavid[:title].downcase
+          	video = Video.new(:name => name, :ytid => ytid, :genre => genre)
+    				video.save
+    				puts "#{name} saved"
+    				count = count + 1
 
-  				metavid[:ytid] = ytid
-  				metavid[:viewcount] = view_count
-  				metavid[:pos] = count
-  			end
-  		end
+    				metavid[:ytid] = ytid
+    				metavid[:viewcount] = view_count
+    				metavid[:pos] = count
+    			end
+    		end
+      end
   	end
   end
 
