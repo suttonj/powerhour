@@ -6,9 +6,9 @@ Dionysus::Application.routes.draw do
 
   match 'videos' => 'videos#index'
   
-  authenticated :user do
-    root :to => 'home#index'
-  end
+  #authenticated :user do
+  #  root :to => 'home#index'
+ # end
 
   root :to => "home#index"
 
